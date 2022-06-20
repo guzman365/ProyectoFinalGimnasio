@@ -9,15 +9,14 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="20dp"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        tools:layout_editor_absoluteX="20dp">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             tools:layout_editor_absoluteX="10dp"
             tools:layout_editor_absoluteY="10dp">
@@ -55,16 +54,16 @@
                         android:id="@+id/textView2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Entrenador: "
+                        android:text="idRutina: "
                         android:textColor="@color/black"
                         android:textSize="15sp" />
 
                     <TextView
-                        android:id="@+id/txvNombreEntrenador"
+                        android:id="@+id/txvIdRutina"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Nombre entrenador"
+                        android:text="valor"
                         android:textColor="@color/black"
                         android:textSize="15sp" />
 
@@ -89,7 +88,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Pierna, brazo"
+                        android:text="valor"
                         android:textColor="@color/black"
                         android:textSize="15sp" />
 
@@ -110,23 +109,23 @@
                         android:textSize="15sp" />
 
                     <TextView
-                        android:id="@+id/txvObjetivo"
+                        android:id="@+id/txvObjetivo2"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Hipertrofia"
+                        android:text="valor"
                         android:textColor="@color/black"
                         android:textSize="15sp" />
 
                 </LinearLayout>
-
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rcvEjercicios"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="580dp"
                 android:layout_marginTop="10dp"
+                android:background="@color/material_dynamic_neutral80"
                 android:padding="10dp" />
 
         </LinearLayout>

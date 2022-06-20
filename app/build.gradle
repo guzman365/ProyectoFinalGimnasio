@@ -18,7 +18,7 @@ android {
     buildTypes {
         //Configuracion de variable global para cambiar IP de manera general
         debug{
-            buildConfigField "String","urlProyecto","\"http://192.168.0.19:8080/gimnasioWebService\""
+            buildConfigField "String","urlProyecto","\"http://192.168.0.10:8080/gimnasioWebService\""
         }
         release {
             minifyEnabled false
@@ -38,8 +38,9 @@ dependencies {
     //Nuevas
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'com.android.volley:volley:1.2.1'
-    implementation 'com.squareup.picasso:picasso:2.71828'
     implementation "com.github.bumptech.glide:glide:4.13.0"
+    implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
 
     //Viejas
     implementation 'androidx.appcompat:appcompat:1.4.2'

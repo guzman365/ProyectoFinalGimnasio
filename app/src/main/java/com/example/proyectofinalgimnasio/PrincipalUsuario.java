@@ -1,6 +1,8 @@
 package com.example.proyectofinalgimnasio;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,7 +14,6 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -24,26 +25,40 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PrincipalUsuario extends AppCompatActivity {
     private RequestQueue requestQueue;
     SharedPreferences.Editor editor;
+    private List<ModeloRutina> lsRutina;
+    private RecyclerView recyclerView;
     TextView txvCliente, txvObjetivo, txvNumSesiones, txvEntrenador;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal_usuario);
+
+        lsRutina = new ArrayList<ModeloRutina>();
+        lsRutina.clear();
+
+        setContentView(R.layout.activity_principal_usuario);
         txvCliente=findViewById(R.id.txvNombreCliente);
-        txvEntrenador = findViewById(R.id.txvNombreEntrenador);
+        txvEntrenador = findViewById(R.id.txvIdRutina);
         txvNumSesiones = findViewById(R.id.txvNumSesiones);
         txvObjetivo = findViewById(R.id.txvObjetivo);
+        recyclerView = findViewById(R.id.rcvRutinas);
+
+        /*APARTADO DATOS DE ENTRENAMIENTO*/
         SharedPreferences preferences = getSharedPreferences("credenciales", Context.MODE_PRIVATE);
         String idCliente = String.valueOf(preferences.getInt("idCliente",0));
         String nombres = preferences.getString("nombres", "Usuario no identificado");
         txvCliente.setText(nombres);
+
         obtenerEntrenamientoCliente(idCliente);
+        int idEntrenamiento = preferences.getInt("idEntrenamiento",0);
+        obtenerEntrenamientoRutina(idEntrenamiento);
     }
 
     public boolean onCreateOptionsMenu(Menu menu){
@@ -59,6 +74,7 @@ public class PrincipalUsuario extends AppCompatActivity {
             editor.putInt("idCliente",0);
             editor.putString("nombres","");
             editor.putBoolean("sesion",false);
+            editor.putInt("idEntrenamiento",0);
             editor.commit();
 
             Intent cerrarSerion = new Intent(this, loginUsuarios.class);
@@ -70,7 +86,7 @@ public class PrincipalUsuario extends AppCompatActivity {
     private void obtenerEntrenamientoCliente(String idCliente) {
         SharedPreferences preferences = getSharedPreferences("credenciales", Context.MODE_PRIVATE);
         editor = preferences.edit();
-        final String[] idEntrenamiento = {""};
+        final int[] idEntrenamiento = {0};
         final String[] entrenador = {""};
         final String[] numeroSesiones = {""};
         final String[] objetivo = {""};
@@ -87,12 +103,12 @@ public class PrincipalUsuario extends AppCompatActivity {
                             JSONArray jsonArray = jsonObject.getJSONArray("items");
                             for(int i = 0; i<jsonArray.length();i++){
                                 JSONObject jObject = jsonArray.getJSONObject(i);
-                                idEntrenamiento[0]=jObject.getString("idEntrenamiento");
+                                idEntrenamiento[0]=jObject.getInt("idEntrenamiento");
                                 entrenador[0]=jObject.getString("entrenador");
                                 numeroSesiones[0]=jObject.getString("numeroSesiones");
                                 objetivo[0]=jObject.getString("objetivo");
                             }
-                            editor.putString("idEntrenamiento",idEntrenamiento[0]);
+                            editor.putInt("idEntrenamiento",idEntrenamiento[0]);
                             editor.commit();
                             txvEntrenador.setText(entrenador[0]);
                             txvNumSesiones.setText(numeroSesiones[0]);
@@ -112,7 +128,55 @@ public class PrincipalUsuario extends AppCompatActivity {
                 toast.show();
             }
         });
+
         requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(request);
+    }
+
+    private void obtenerEntrenamientoRutina(int idEntrenamiento){
+        String URL = BuildConfig.urlProyecto+"/apis/EntrenamientoRutina/obtenerEntrenamientosRutina.php?txtIdEntrenamiento="+idEntrenamiento;
+        StringRequest stringRequest = new StringRequest(
+                Request.Method.GET,
+                URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.i("Response", response);
+                        try {
+                            Log.i("Error Response", response);
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray jsonArray = jsonObject.getJSONArray("items");
+
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject jObject = jsonArray.getJSONObject(i);
+
+                                ModeloRutina mRutina = new ModeloRutina();
+
+                                mRutina.setIdRutina(Integer.parseInt(jObject.getString("idRutina")));
+                                mRutina.setNombre(jObject.getString("nombre"));
+                                mRutina.setObjetivo(jObject.getString("objetivo"));
+
+                                lsRutina.add(mRutina);
+                            }
+                            setDataRecyclerAdapter(lsRutina);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.i("Error Catch", e.toString());
+                        }
+                    }//FIn OnResponse
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.i("Error",error.toString());
+            }
+        });
+        requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+    }
+
+    private void setDataRecyclerAdapter(List<ModeloRutina> lsRutina){
+        AdapterRutina myadapter = new AdapterRutina(this,lsRutina);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(myadapter);
     }
 }

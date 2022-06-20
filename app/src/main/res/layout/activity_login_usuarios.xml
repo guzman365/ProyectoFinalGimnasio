@@ -7,31 +7,28 @@
     android:background="@color/material_dynamic_neutral20"
     tools:context=".loginUsuarios">
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="GIMNASIO OLIMPO"
-        android:textColor="@color/white"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.264" />
-
     <LinearLayout
         android:id="@+id/lnPrincipalLogin"
         android:layout_width="409dp"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp">
+        app:layout_constraintVertical_bias="0.406">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp"
+            android:text="GIMNASIO OLIMPO"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="24sp" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/dui"
@@ -48,10 +45,10 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginBottom="10dp"
                 android:background="@color/material_dynamic_neutral60"
+                android:gravity="center"
                 android:hint="DUI (sin guión)"
                 android:textColor="#000000"
-                android:textColorHint="#212121"
-                android:gravity="center"/>
+                android:textColorHint="#212121" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -78,7 +75,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingStart="50dp"
+            android:paddingEnd="50dp">
 
             <Button
                 android:id="@+id/btnIngresar"
@@ -91,15 +90,6 @@
                 android:color="@color/verde"
                 android:radius="20dp"
                 android:text="@string/ingresar" />
-
-            <CheckBox
-                android:id="@+id/chkEntrenador"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_weight="1"
-                android:text="Soy entrenador"
-                android:textColor="@color/white" />
 
         </LinearLayout>
 
